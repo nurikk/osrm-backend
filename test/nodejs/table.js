@@ -284,6 +284,21 @@ tables.forEach(function(annotation) {
         });
     });
 
+    test('table: ' + annotation + ' table in Monaco with fallback speeds 42 CH', function(assert) {
+        assert.plan(2);
+        var osrm = new OSRM({path: data_path});
+        var options = {
+            coordinates: two_test_coordinates.concat([one_test_coordinate_outside_mapboundaries]),
+            annotations: [annotation.slice(0,-1)],
+            fallback_speed: 42,
+            fallback_coordinate: 'input'
+        };
+        osrm.table(options, function(err, response) {
+            assert.equal(response[annotation].length, 3);
+            assert.equal(response['fallback_speed_cells'].length, 1);
+        });
+    });
+
     test('table: ' + annotation + ' table in Monaco with invalid fallback speeds and fallback coordinates', function(assert) {
         assert.plan(4);
         var osrm = new OSRM({path: mld_data_path, algorithm: 'MLD'});
@@ -327,32 +342,3 @@ tables.forEach(function(annotation) {
     });
 });
 
-test('Table in Monaco with fallback speeds', function(assert) {
-    assert.plan(2);
-    var osrm = new OSRM({path: data_path});
-    var options = {
-        coordinates: two_test_coordinates.concat([one_test_coordinate_outside_mapboundaries]),
-        annotations: [annotation.slice(0,-1)],
-        fallback_speed: 1,
-        fallback_coordinate: 'input'
-    };
-    osrm.table(options, function(err, response) {
-        assert.equal(response[annotation].length, 3);
-        assert.equal(response['fallback_speed_cells'].length, 0);
-    });
-});
-
-test('Table in Monaco with fallback speeds 42', function(assert) {
-    assert.plan(2);
-    var osrm = new OSRM({path: data_path});
-    var options = {
-        coordinates: two_test_coordinates.concat([one_test_coordinate_outside_mapboundaries]),
-        annotations: [annotation.slice(0,-1)],
-        fallback_speed: 42,
-        fallback_coordinate: 'input'
-    };
-    osrm.table(options, function(err, response) {
-        assert.equal(response[annotation].length, 3);
-        assert.equal(response['fallback_speed_cells'].length, 1);
-    });
-});
