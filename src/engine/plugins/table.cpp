@@ -104,8 +104,12 @@ Status TablePlugin::HandleRequest(const RoutingAlgorithmsInterface &algorithms,
             {
                 const auto &table_index = row * num_destinations + column;
                 BOOST_ASSERT(table_index < result_tables_pair.first.size());
-                if (params.fallback_speed != INVALID_FALLBACK_SPEED && params.fallback_speed > 0 &&
-                    result_tables_pair.first[table_index] == MAXIMAL_EDGE_DURATION)
+                if (params.fallback_speed != INVALID_FALLBACK_SPEED && params.fallback_speed > 0 
+                    && (
+                        result_tables_pair.first[table_index] == MAXIMAL_EDGE_DURATION
+                        || result_tables_pair.first[table_index] == NULL_EDGE_DISTANCE
+                    )
+                )
                 {
                     const auto &source =
                         snapped_phantoms[params.sources.empty() ? row : params.sources[row]];
