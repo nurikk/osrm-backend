@@ -280,7 +280,7 @@ tables.forEach(function(annotation) {
         };
         osrm.table(options, function(err, response) {
             assert.equal(response[annotation].length, 3);
-            assert.equal(response['fallback_speed_cells'].length, 1);
+            assert.equal(response['fallback_speed_cells'].length, 3);
         });
     });
 
@@ -295,7 +295,7 @@ tables.forEach(function(annotation) {
         };
         osrm.table(options, function(err, response) {
             assert.equal(response[annotation].length, 3);
-            assert.equal(response['fallback_speed_cells'].length, 1);
+            assert.equal(response['fallback_speed_cells'].length, 3);
         });
     });
 
